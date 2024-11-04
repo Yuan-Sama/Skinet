@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddDbContext<ShopDbContext>(options =>
 {
-    options.UseSqlite(builder.Configuration.GetConnectionString("Development"));
+    options.UseSqlite(builder.Configuration.GetConnectionString("Default"));
 });
 
 var app = builder.Build();
