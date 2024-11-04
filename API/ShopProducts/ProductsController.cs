@@ -14,10 +14,18 @@ public class ProductsController : ControllerBase
     {
         this.shopDbContext = shopDbContext;
     }
-
-    public async Task<ActionResult<IEnumerable<Product>>> GetProductsAsync()
+    
+    public async Task<ActionResult<IEnumerable<Product>>> GetProductsAsync(string? brand, string? type)
     {
-        return await shopDbContext.Products.ToListAsync();
+        var query = shopDbContext.Products.AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(brand))
+            query = query.Where(p => p.Brand == brand);
+
+        if (!string.IsNullOrWhiteSpace(type))
+            query = query.Where(p => p.Type == type);
+
+        return await query.ToListAsync();
     }
 
     [HttpGet("{id:int}")]
@@ -74,5 +82,17 @@ public class ProductsController : ControllerBase
             return BadRequest("Problem deleting the product");
 
         return NoContent();
+    }
+
+    [HttpGet("brands")]
+    public async Task<ActionResult<IEnumerable<string>>> GetBrandsAsync()
+    {
+        return await shopDbContext.Products.Select(p => p.Brand).Distinct().ToListAsync();
+    }
+
+    [HttpGet("types")]
+    public async Task<ActionResult<IEnumerable<string>>> GetTypesAsync()
+    {
+        return await shopDbContext.Products.Select(p => p.Type).Distinct().ToListAsync();
     }
 }
