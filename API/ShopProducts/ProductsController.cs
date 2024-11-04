@@ -35,9 +35,12 @@ public class ProductsController : ControllerBase
     {
         shopDbContext.Products.Add(product);
 
-        await shopDbContext.SaveChangesAsync();
+        var numberOfProduct = await shopDbContext.SaveChangesAsync();
 
-        return product;
+        if (numberOfProduct < 1)
+            return BadRequest("Problem creating product");
+
+        return CreatedAtAction("GetProduct", new { id = product.Id }, product);
     }
 
     [HttpPut("{id:int}")]
@@ -48,7 +51,10 @@ public class ProductsController : ControllerBase
 
         shopDbContext.Entry(newProduct).State = EntityState.Modified;
 
-        await shopDbContext.SaveChangesAsync();
+        var numberOfProduct = await shopDbContext.SaveChangesAsync();
+
+        if (numberOfProduct < 1)
+            return BadRequest("Problem updating the product");
 
         return NoContent();
     }
@@ -62,7 +68,10 @@ public class ProductsController : ControllerBase
 
         shopDbContext.Products.Remove(product);
 
-        await shopDbContext.SaveChangesAsync();
+        var numberOfProduct = await shopDbContext.SaveChangesAsync();
+
+        if (numberOfProduct < 1)
+            return BadRequest("Problem deleting the product");
 
         return NoContent();
     }
