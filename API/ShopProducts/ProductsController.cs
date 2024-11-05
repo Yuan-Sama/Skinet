@@ -24,6 +24,8 @@ public class ProductsController : ControllerBase
 
         query = query.Where(p => productsQueries.Types.Count == 0 || productsQueries.Types.Contains(p.Type));
 
+        query = query.Where(p => string.IsNullOrEmpty(productsQueries.Search) || EF.Functions.Like(p.Name, $"%{productsQueries.Search}%"));
+
         var count = await query.CountAsync();
 
         query = productsQueries.Sort switch
