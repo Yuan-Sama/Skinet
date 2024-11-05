@@ -14,8 +14,8 @@ public class ProductsController : ControllerBase
     {
         this.shopDbContext = shopDbContext;
     }
-    
-    public async Task<ActionResult<IEnumerable<Product>>> GetProductsAsync(string? brand, string? type)
+
+    public async Task<ActionResult<IEnumerable<Product>>> GetProductsAsync(string? brand, string? type, string? sort)
     {
         var query = shopDbContext.Products.AsQueryable();
 
@@ -24,6 +24,13 @@ public class ProductsController : ControllerBase
 
         if (!string.IsNullOrWhiteSpace(type))
             query = query.Where(p => p.Type == type);
+
+        query = sort switch
+        {
+            "priceAsc" => query.OrderBy(p => p.Price),
+            "priceDesc" => query.OrderByDescending(p => p.Price),
+            _ => query.OrderBy(p => p.Name)
+        };
 
         return await query.ToListAsync();
     }
