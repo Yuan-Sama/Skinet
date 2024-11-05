@@ -1,4 +1,5 @@
 using API.Core;
+using API.Shared;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,13 +16,15 @@ public class ProductsController : ControllerBase
         this.shopDbContext = shopDbContext;
     }
 
-    public async Task<ActionResult<IEnumerable<Product>>> GetProductsAsync([FromQuery] ProductsQueries productsQueries)
+    public async Task<ActionResult<Pagination<Product>>> GetProductsAsync([FromQuery] ProductsQueries productsQueries)
     {
         var query = shopDbContext.Products.AsQueryable();
 
         query = query.Where(p => productsQueries.Brands.Count == 0 || productsQueries.Brands.Contains(p.Brand));
 
         query = query.Where(p => productsQueries.Types.Count == 0 || productsQueries.Types.Contains(p.Type));
+
+        var count = await query.CountAsync();
 
         query = productsQueries.Sort switch
         {
@@ -30,7 +33,12 @@ public class ProductsController : ControllerBase
             _ => query.OrderBy(p => p.Name)
         };
 
-        return await query.ToListAsync();
+        query = query.Skip(productsQueries.PageSize * (productsQueries.PageIndex - 1)).Take(productsQueries.PageSize);
+
+        var pagination = new Pagination<Product>(
+            productsQueries.PageIndex, productsQueries.PageSize, count, await query.ToListAsync());
+
+        return pagination;
     }
 
     [HttpGet("{id:int}")]
