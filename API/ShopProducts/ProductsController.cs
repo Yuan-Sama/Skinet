@@ -15,17 +15,15 @@ public class ProductsController : ControllerBase
         this.shopDbContext = shopDbContext;
     }
 
-    public async Task<ActionResult<IEnumerable<Product>>> GetProductsAsync(string? brand, string? type, string? sort)
+    public async Task<ActionResult<IEnumerable<Product>>> GetProductsAsync([FromQuery] ProductsQueries productsQueries)
     {
         var query = shopDbContext.Products.AsQueryable();
 
-        if (!string.IsNullOrWhiteSpace(brand))
-            query = query.Where(p => p.Brand == brand);
+        query = query.Where(p => productsQueries.Brands.Count == 0 || productsQueries.Brands.Contains(p.Brand));
 
-        if (!string.IsNullOrWhiteSpace(type))
-            query = query.Where(p => p.Type == type);
+        query = query.Where(p => productsQueries.Types.Count == 0 || productsQueries.Types.Contains(p.Type));
 
-        query = sort switch
+        query = productsQueries.Sort switch
         {
             "priceAsc" => query.OrderBy(p => p.Price),
             "priceDesc" => query.OrderByDescending(p => p.Price),
