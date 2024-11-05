@@ -14,6 +14,8 @@ builder.Services.AddDbContext<ShopDbContext>(options =>
 
 var app = builder.Build();
 
+app.UseMiddleware<ExceptionMiddleware>();
+
 app.MapControllers();
 
 try
