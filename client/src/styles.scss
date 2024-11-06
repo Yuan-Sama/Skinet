@@ -1,0 +1,27 @@
+@use '@angular/material' as mat;
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+$customTheme: mat.define-theme();
+
+@include mat.core();
+
+.custom-theme {
+  @include mat.all-component-themes($customTheme);
+  
+  .mdc-button, .mdc-raised-button, .mdc-stroked-button, .mdc-flat-button {
+      @apply rounded-md;
+  }
+}
+
+@layer utilities {
+  .custom-badge .mat-badge-content {
+    @apply size-[24px] text-2xl leading-6;
+  }
+
+  .custom-badge .mat-icon {
+    @apply text-[32px] size-[32px];
+  }
+}
