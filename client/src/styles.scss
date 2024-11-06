@@ -1,4 +1,4 @@
-@use '@angular/material' as mat;
+@use "@angular/material" as mat;
 
 @tailwind base;
 @tailwind components;
@@ -10,9 +10,12 @@ $customTheme: mat.define-theme();
 
 .custom-theme {
   @include mat.all-component-themes($customTheme);
-  
-  .mdc-button, .mdc-raised-button, .mdc-stroked-button, .mdc-flat-button {
-      @apply rounded-md;
+
+  .mdc-button,
+  .mdc-raised-button,
+  .mdc-stroked-button,
+  .mdc-flat-button {
+    @apply rounded-md;
   }
 }
 

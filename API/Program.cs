@@ -12,6 +12,7 @@ builder.Services.AddDbContext<ShopDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("Default"));
 });
 builder.Services.AddCors();
+builder.Services.AddTransient<ExceptionMiddleware>();
 
 var app = builder.Build();
 
