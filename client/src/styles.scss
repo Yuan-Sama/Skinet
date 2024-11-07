@@ -19,6 +19,26 @@ $customTheme: mat.define-theme();
   }
 }
 
+a {
+  &.active {
+    color: #7d00fa;
+  }
+}
+
+.product-card {
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.product-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+.mdc-notched-outline__notch {
+  border-right-style: none !important;
+}
+
 @layer base {
   .text-primary {
     color: #7d00fa;
