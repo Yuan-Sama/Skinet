@@ -19,6 +19,12 @@ $customTheme: mat.define-theme();
   }
 }
 
+@layer base {
+  .text-primary {
+    color: #7d00fa;
+  }
+}
+
 @layer utilities {
   .custom-badge .mat-badge-content {
     @apply size-[24px] text-2xl leading-6;
@@ -26,5 +32,9 @@ $customTheme: mat.define-theme();
 
   .custom-badge .mat-icon {
     @apply text-[32px] size-[32px];
+  }
+
+  button.match-input-height {
+    height: var(--mat-form-field-container-height) !important;
   }
 }
