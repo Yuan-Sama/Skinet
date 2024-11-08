@@ -51,6 +51,10 @@ a {
   --mdc-snackbar-supporting-text-color: #fff;
 }
 
+.icon-display {
+  transform: scale(3);
+}
+
 @layer base {
   .text-primary {
     color: #7d00fa;
