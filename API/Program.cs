@@ -1,5 +1,6 @@
 using API.Core;
 using API.Seed;
+using API.ShoppingCarts;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
 
@@ -22,6 +23,7 @@ builder.Services.AddSingleton<IConnectionMultiplexer>(config =>
     var configuration = ConfigurationOptions.Parse(connString, true);
     return ConnectionMultiplexer.Connect(configuration);
 });
+builder.Services.AddSingleton<IShoppingCartService, ShoppingCartService>();
 
 var app = builder.Build();
 
